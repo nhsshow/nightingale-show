@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  test_schedule:
+  release:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,5 +23,7 @@ jobs:
           zip theme.zip nightingale-child
 
       - name: Release new version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create ${{ github.ref_name }} theme.zip info.json
