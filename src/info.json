@@ -5,6 +5,7 @@
 	"author_profile" : "https://github.com/nhsshow",
 	"version" : "1.1.0",
 	"download_url" : "https://github.com/nhsshow/nightingale-show/releases/latest/download/theme.zip",
+	"details_url"  : "https://github.com/nhsshow/nightingale-show/releases/latest",
 
 	"requires" : "5.5",
 	"requires_php" : "8.0"
