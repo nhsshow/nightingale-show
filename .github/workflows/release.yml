@@ -22,7 +22,7 @@ jobs:
 
       - name: Compress Theme
         run: |
-          zip -R theme.zip nightingale-child
+          zip -r theme.zip nightingale-child
 
       - name: Release new version
         env:
