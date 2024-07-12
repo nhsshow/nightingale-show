@@ -3,7 +3,7 @@
 ## Introduction
 This is a companion child theme that can be used in conjuction with the NHS Leadership Acadamy Nightingale Theme (https://en-gb.wordpress.org/themes/nightingale/).
 
-It has been customised to apply NHS Scotland colours and adds additional custom templates.
+It has been customised to apply NHS Scotland colours, add additional custom templates, and change the font used (due to licensing).
 
 ## Dependencies
 This theme requires an active WordPress install of version 5.5 or higher and the NHS Leadership Acadamy Nightingale Theme (https://en-gb.wordpress.org/themes/nightingale/) to be present within the Themes folder.

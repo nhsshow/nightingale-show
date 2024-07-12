@@ -1,0 +1,27 @@
+name: CI
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  test_schedule:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./src/
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compress Theme
+        run: |
+          zip theme.zip nightingale-child
+
+      - name: Release new version
+        run: |
+          gh release create ${{ github.ref_name }} theme.zip info.json
