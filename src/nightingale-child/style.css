@@ -1,0 +1,83 @@
+/*
+Theme Name: Nightingale Child - NHS Scotland
+Template: nightingale
+Author: SHOW - OT
+Description: Theme for NHS SCOTLAND organisations based on the NHS Leadership Academy Nightingale WordPress Theme. Highly customisable for all types of NHS organisations, from campaign sites to primary care providers to arms length bodies to community practices.
+Tags: nhsscotland,right-sidebar,left-sidebar,custom-menu,footer-widgets,theme-options
+Version: 1.0.2
+Updated: 2023-04-18 17:16:03
+
+*/
+
+:root {
+    --nhsscotland-darkblue: #003087;
+    --nhsscotland-lightblue: #0492D9;
+    --white: #ffffff;
+    --highlight-yellow: #fadb00;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Frutiger W01,Arial,Sans-serif;
+}
+
+/*Hides the reCAPTCHA badge on the contact us page. ID must match page id.*/
+body:not(.page-id-2569) .grecaptcha-badge {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/*Hides the Breadcrumbs trail on the Home Page.*/
+body.home .nhsuk-breadcrumb {
+	display: none;
+}
+
+/*Hides the Entry Title on the Home Page.*/
+body.home .entry-title {
+	display: none;
+}
+
+/*Sets the logo width to 75px.*/
+.custom-logo {
+	width: 75px;
+}
+
+#primary h1 {
+	color: var(--nhsscotland-darkblue);
+}
+
+.entry-content h2, h3, h4, h5, h6 {
+	color: var(--nhsscotland-darkblue);
+}
+
+.page-colour--dark-blue .nhsuk-header, .page-colour--dark-blue .nhsuk-header--white .nhsuk-search__submit, .page-colour--dark-blue #secondary section h2.widget-title, .page-colour--dark-blue .nhsuk-panel-with-label__label, .page-colour--dark-blue #secondary section #wp-calendar caption, .page-colour--dark-blue #secondary section h2.widget-title, .page-colour--dark-blue .nhsuk-panel-with-label__label, .page-colour--dark-blue #secondary section #wp-calendar caption, .page-colour--dark-blue .nhsuk-do-dont-list__label, .page-colour--dark-blue .nhsuk-care-card.is-style-default .nhsuk-care-card__heading-container, .page-colour--dark-blue .nhsuk-hero--image-description .nhsuk-hero-content, .page-colour--dark-blue .nhsuk-panel-with-label__label, .page-colour--dark-blue .nhsuk-panel.is-style-panel-with-label h3, .page-colour--dark-blue .nhsuk-panel.is-style-panel-with-label h3 .rich-text, #content .page-style--dark-blue .nhsuk-header, #content .page-style--dark-blue .nhsuk-header--white .nhsuk-search__submit, #content .page-style--dark-blue #secondary section h2.widget-title, #content .page-style--dark-blue .nhsuk-panel-with-label__label, #content .page-style--dark-blue #secondary section #wp-calendar caption, #content .page-style--dark-blue #secondary section h2.widget-title, #content .page-style--dark-blue .nhsuk-panel-with-label__label, #content .page-style--dark-blue #secondary section #wp-calendar caption, #content .page-style--dark-blue .nhsuk-do-dont-list__label, #content .page-style--dark-blue .nhsuk-care-card.is-style-default .nhsuk-care-card__heading-container, #content .page-style--dark-blue .nhsuk-hero--image-description .nhsuk-hero-content, #content .page-style--dark-blue .nhsuk-panel-with-label__label, #content .page-style--dark-blue .nhsuk-panel.is-style-panel-with-label h3, #content .page-style--dark-blue .nhsuk-panel.is-style-panel-with-label h3 .rich-text {
+    background-color: var(--darkblue);
+    background: var(--nhsscotland-darkblue);
+    color: var(--white);
+}
+
+.nhsuk-header__navigation-link:active:visited, .nhsuk-header__navigation-link:focus:visited {
+    color: var(--highlight-yellow);
+}
+
+.wp-block-nhsblocks-heroblock {
+	margin: 0;
+}
+
+.partnerlogo {
+	opacity: 0.5;
+	filter: grayscale(1);
+	transition: 0.5s ease-in-out;
+}
+
+.partnerlogo:hover {
+	opacity: 1;
+	filter: grayscale(0);
+}
+
+.rounded-corners {
+    border-radius: 15px;
+}
+
+.opacity80 {
+    opacity: 0.85;
+}
