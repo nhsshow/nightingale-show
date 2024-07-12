@@ -2,6 +2,18 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+//region Plugin Update Checker
+require_once get_theme_file_path( 'plugin-update-checker/plugin-update-checker.php' );
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+$showUpdateChecker = PucFactory::buildUpdateChecker(
+	'https://github.com/nhsshow/nightingale-show/releases/latest/download/info.json',
+	__FILE__, //Full path to the main plugin file or functions.php.
+	'nightingale-child'
+);
+//endregion Plugin Update Checker
+
+
 // BEGIN ENQUEUE PARENT ACTION
 // AUTO GENERATED - Do not modify or remove comment markers above or below:
 
@@ -13,7 +25,7 @@ if ( !function_exists( 'chld_thm_cfg_locale_css' ) ):
     }
 endif;
 add_filter( 'locale_stylesheet_uri', 'chld_thm_cfg_locale_css' );
-         
+
 if ( !function_exists( 'child_theme_configurator_css' ) ):
     function child_theme_configurator_css() {
         wp_enqueue_style( 'chld_thm_cfg_child', trailingslashit( get_stylesheet_directory_uri() ) . 'style.css', array( 'nightingale-style','nightingale-style','nightingale-page-colours' ) );
@@ -28,7 +40,7 @@ add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css', 10 );
 
 // CUSTOM CODE BELOW
 
-// Replace default logo with NHS Scotland on WP-Login Page 
+// Replace default logo with NHS Scotland on WP-Login Page
 function add_logo_to_login() {
     echo '<h1>&nbsp;</h1><style type="text/css">
         h1 a { background-image:url('.get_stylesheet_directory_uri().'/images/nhs-scotland-logo.svg) !important; width:300px !important;}
@@ -38,7 +50,7 @@ add_action('login_head', 'add_logo_to_login');
 
 
 
-// Register new SECONDARY sidebar for use with Secondary Sidebar template 
+// Register new SECONDARY sidebar for use with Secondary Sidebar template
 function secondary_sidebar_widgets_init() {
 
     register_sidebar( array(
@@ -57,7 +69,7 @@ add_action( 'widgets_init', 'secondary_sidebar_widgets_init' );
 // Custom script with no dependencies, enqueued in the footer
 add_action('wp_enqueue_scripts', 'nhsscotland_enqueue_custom_js');
 function nhsscotland_enqueue_custom_js() {
-    wp_enqueue_script('custom', get_stylesheet_directory_uri().'/scripts/custom.js', 
+    wp_enqueue_script('custom', get_stylesheet_directory_uri().'/scripts/custom.js',
     array(), false, true);
 }
 
@@ -124,8 +136,8 @@ function hide_add_plugin_screen() {
             .plugin-install-tab-featured {display:none;}
             .plugin-install-tab-featured::before {content: "Please contact nss.showteam@nhs.scot";}
             #setting-error-tgmpa {display: none;}
-            .row-actions>.delete {visibility: hidden;} 
-            } 
+            .row-actions>.delete {visibility: hidden;}
+            }
         </style>';
   }
 }
