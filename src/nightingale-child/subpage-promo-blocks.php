@@ -16,11 +16,9 @@
  */
 
 get_header();
-
 flush();
 
-function remove_excerpt_ellipsis($more)
-{
+function remove_excerpt_ellipsis($more) {
     return "";
 }
 add_filter("excerpt_more", "remove_excerpt_ellipsis");
@@ -28,31 +26,26 @@ add_filter("excerpt_more", "remove_excerpt_ellipsis");
 
 <div id="primary" class=" nhsuk-grid-row">
 
-	<?php
- $current_page_id = get_the_ID();
- $args = [
-     "post_parent" => $current_page_id,
-     "post_type" => "page",
-     "orderby" => "menu_order",
-     "order" => "ASC",
-     "post_status" => "publish",
- ];
- $child_pages = get_children($args);
- if (count($child_pages) % 2 !== 0 || count($child_pages) > 5) {
-     $class_name =
-         "wp-block-nhsblocks-onethirdpro nhsuk-grid-column-one-third nhsuk-card-group__item";
- } else {
-     $class_name =
-         "wp-block-nhsblocks-onehalfpro nhsuk-grid-column-one-half nhsuk-card-group__item";
- }
- ?>
-
+<?php
+	$current_page_id = get_the_ID();
+	$args = [
+		"post_parent" => $current_page_id,
+		"post_type" => "page",
+		"orderby" => "menu_order",
+		"order" => "ASC",
+		"post_status" => "publish",
+	];
+	$child_pages = get_children($args);
+	if (count($child_pages) % 2 !== 0 || count($child_pages) > 5) {
+		$class_name = "wp-block-nhsblocks-onethirdpro nhsuk-grid-column-one-third nhsuk-card-group__item";
+	} else {
+		$class_name = "wp-block-nhsblocks-onehalfpro nhsuk-grid-column-one-half nhsuk-card-group__item";
+	}
+?>
 	<header class="entry-header">
-		<h1 class="entry-title"> <?php echo get_the_title($current_page_id); ?> </h1>
+		<h1 class="entry-title"><?=get_the_title($current_page_id); ?></h1>
 	</header>
-	<div class="entry-content"> <?php echo get_the_content(
-     $current_page_id
- ); ?></div>
+	<div class="entry-content"><?=get_the_content($current_page_id); ?></div>
 
 	<div class="nhsuk-grid-column-full full-width">
 
@@ -65,38 +58,38 @@ add_filter("excerpt_more", "remove_excerpt_ellipsis");
           $excerpt = get_the_excerpt($child_page->ID);
           $excerpt = apply_filters("wp_trim_excerpt", $excerpt);
           ?>
-					<div class="CPS <?php echo $class_name; ?>">
+					<div class="CPS <?=$class_name; ?>">
 						<div class="wp-block-nhsblocks-promo1 nhsuk-card nhsuk-card--clickable is-style-default">
 						<?php
           /*
 						if ( has_post_thumbnail( $child_page->ID ) ) : ?>
 									<figure class="wp-block-image size-full is-resized">
-										<a href="<?php echo get_permalink( $child_page->ID ); ?>"><?php echo get_the_post_thumbnail( $child_page->ID ); ?></a>
+										<a href="<?=get_permalink( $child_page->ID ); ?>"><?=get_the_post_thumbnail( $child_page->ID ); ?></a>
 									</figure>
-								<?php endif; 
+								<?php endif;
 						*/
           ?>
-							<div class="nhsuk-card__content">								
-								<h2 class="nhsuk-card__heading nhsuk-heading-m"><a class="nhsuk-card__link" href="<?php echo get_permalink(
+							<div class="nhsuk-card__content">
+								<h2 class="nhsuk-card__heading nhsuk-heading-m"><a class="nhsuk-card__link" href="<?=get_permalink(
             $child_page->ID
-        ); ?>"><?php echo get_the_title($child_page->ID); ?></a></h2>
+        ); ?>"><?=get_the_title($child_page->ID); ?></a></h2>
 								<div class="nhsuk-card__description">
-									<?php echo $excerpt; ?>
+									<?=$excerpt; ?>
 								</div>
 							</div>
 						</div>
 					</div>
-					
+
 					<?php
       }
   }
-  ?> 
+  ?>
 	</div>
 
 </div>
 
 <script>
-	// Get all the elements with class 'nhsuk-card__content'
+// Get all the elements with class 'nhsuk-card__content'
 var cardContents = document.getElementsByClassName('CPS');
 
 // Variable to store the maximum height
@@ -118,5 +111,3 @@ for (var i = 0; i < cardContents.length; i++) {
 <?php
 flush();
 get_footer();
-
-?>

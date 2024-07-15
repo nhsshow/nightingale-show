@@ -6,7 +6,6 @@ Description: Theme for NHS SCOTLAND organisations based on the NHS Leadership Ac
 Tags: nhsscotland,right-sidebar,left-sidebar,custom-menu,footer-widgets,theme-options
 Version: 1.1.2
 Updated: 2024-07-12 12:00:00
-
 */
 
 :root {
@@ -49,13 +48,40 @@ body.home .entry-title {
 	color: var(--nhsscotland-darkblue);
 }
 
-.page-colour--dark-blue .nhsuk-header, .page-colour--dark-blue .nhsuk-header--white .nhsuk-search__submit, .page-colour--dark-blue #secondary section h2.widget-title, .page-colour--dark-blue .nhsuk-panel-with-label__label, .page-colour--dark-blue #secondary section #wp-calendar caption, .page-colour--dark-blue #secondary section h2.widget-title, .page-colour--dark-blue .nhsuk-panel-with-label__label, .page-colour--dark-blue #secondary section #wp-calendar caption, .page-colour--dark-blue .nhsuk-do-dont-list__label, .page-colour--dark-blue .nhsuk-care-card.is-style-default .nhsuk-care-card__heading-container, .page-colour--dark-blue .nhsuk-hero--image-description .nhsuk-hero-content, .page-colour--dark-blue .nhsuk-panel-with-label__label, .page-colour--dark-blue .nhsuk-panel.is-style-panel-with-label h3, .page-colour--dark-blue .nhsuk-panel.is-style-panel-with-label h3 .rich-text, #content .page-style--dark-blue .nhsuk-header, #content .page-style--dark-blue .nhsuk-header--white .nhsuk-search__submit, #content .page-style--dark-blue #secondary section h2.widget-title, #content .page-style--dark-blue .nhsuk-panel-with-label__label, #content .page-style--dark-blue #secondary section #wp-calendar caption, #content .page-style--dark-blue #secondary section h2.widget-title, #content .page-style--dark-blue .nhsuk-panel-with-label__label, #content .page-style--dark-blue #secondary section #wp-calendar caption, #content .page-style--dark-blue .nhsuk-do-dont-list__label, #content .page-style--dark-blue .nhsuk-care-card.is-style-default .nhsuk-care-card__heading-container, #content .page-style--dark-blue .nhsuk-hero--image-description .nhsuk-hero-content, #content .page-style--dark-blue .nhsuk-panel-with-label__label, #content .page-style--dark-blue .nhsuk-panel.is-style-panel-with-label h3, #content .page-style--dark-blue .nhsuk-panel.is-style-panel-with-label h3 .rich-text {
+.page-colour--dark-blue .nhsuk-header,
+.page-colour--dark-blue .nhsuk-header--white .nhsuk-search__submit,
+.page-colour--dark-blue #secondary section h2.widget-title,
+.page-colour--dark-blue .nhsuk-panel-with-label__label,
+.page-colour--dark-blue #secondary section #wp-calendar caption,
+.page-colour--dark-blue #secondary section h2.widget-title,
+.page-colour--dark-blue .nhsuk-panel-with-label__label,
+.page-colour--dark-blue #secondary section #wp-calendar caption,
+.page-colour--dark-blue .nhsuk-do-dont-list__label,
+.page-colour--dark-blue .nhsuk-care-card.is-style-default .nhsuk-care-card__heading-container,
+.page-colour--dark-blue .nhsuk-hero--image-description .nhsuk-hero-content,
+.page-colour--dark-blue .nhsuk-panel-with-label__label,
+.page-colour--dark-blue .nhsuk-panel.is-style-panel-with-label h3,
+.page-colour--dark-blue .nhsuk-panel.is-style-panel-with-label h3 .rich-text,
+#content .page-style--dark-blue .nhsuk-header,
+#content .page-style--dark-blue .nhsuk-header--white .nhsuk-search__submit,
+#content .page-style--dark-blue #secondary section h2.widget-title,
+#content .page-style--dark-blue .nhsuk-panel-with-label__label,
+#content .page-style--dark-blue #secondary section #wp-calendar caption,
+#content .page-style--dark-blue #secondary section h2.widget-title,
+#content .page-style--dark-blue .nhsuk-panel-with-label__label,
+#content .page-style--dark-blue .nhsuk-do-dont-list__label,
+#content .page-style--dark-blue .nhsuk-care-card.is-style-default .nhsuk-care-card__heading-container,
+#content .page-style--dark-blue .nhsuk-hero--image-description .nhsuk-hero-content,
+#content .page-style--dark-blue .nhsuk-panel-with-label__label,
+#content .page-style--dark-blue .nhsuk-panel.is-style-panel-with-label h3,
+#content .page-style--dark-blue .nhsuk-panel.is-style-panel-with-label h3 .rich-text {
     background-color: var(--darkblue);
     background: var(--nhsscotland-darkblue);
     color: var(--white);
 }
 
-.nhsuk-header__navigation-link:active:visited, .nhsuk-header__navigation-link:focus:visited {
+.nhsuk-header__navigation-link:active:visited,
+.nhsuk-header__navigation-link:focus:visited {
     color: var(--highlight-yellow);
 }
 

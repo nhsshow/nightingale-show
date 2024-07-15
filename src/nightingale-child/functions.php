@@ -3,7 +3,7 @@
 if ( !defined( 'ABSPATH' ) ) exit;
 
 //region Plugin Update Checker
-require_once get_theme_file_path( 'plugin-update-checker/plugin-update-checker.php' );
+require_once get_theme_file_path( 'vendor/plugin-update-checker/plugin-update-checker.php' );
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 $showUpdateChecker = PucFactory::buildUpdateChecker(
