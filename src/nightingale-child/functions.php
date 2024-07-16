@@ -52,16 +52,15 @@ add_action('login_head', 'add_logo_to_login');
 
 // Register new SECONDARY sidebar for use with Secondary Sidebar template
 function secondary_sidebar_widgets_init() {
-
-    register_sidebar( array(
+    register_sidebar(array(
         'name' => 'Secondary Sidebar',
         'id' => 'secondary_sidebar',
         'before_widget' => '<aside class="widget %2$s">',
         'after_widget' => '</aside>',
         'before_title' => '<h2 class="widget-title">',
         'after_title' => '</h2>',
-        ) );
-    }
+    ));
+}
 
 add_action( 'widgets_init', 'secondary_sidebar_widgets_init' );
 
@@ -69,10 +68,8 @@ add_action( 'widgets_init', 'secondary_sidebar_widgets_init' );
 // Custom script with no dependencies, enqueued in the footer
 add_action('wp_enqueue_scripts', 'nhsscotland_enqueue_custom_js');
 function nhsscotland_enqueue_custom_js() {
-    wp_enqueue_script('custom', get_stylesheet_directory_uri().'/scripts/custom.js',
-    array(), false, true);
+    wp_enqueue_script('custom', get_stylesheet_directory_uri().'/scripts/custom.js', array(), false, true);
 }
-
 
 // Hides WordPress dashboard menu items from users other than sysadmin (UserID = 1).
 // Admin users still have access to these pages. All this function does is hides the pages. It does not disable the functionality which can be accessed if the full url is known.
@@ -151,7 +148,7 @@ function enqueue_replace_font() {
     // Add custom CSS to ensure "Istok Web" font-family is used
     $replace_fontcss = "
          body, button, input, select, optgroup, textarea, p, h1, h2, h3, h4, h5, h6, a {
-            font-family: 'Istok Web', sans-serif !important;
+            font-family: \"Istok Web\", sans-serif !important;
         }
     ";
     wp_add_inline_style('replace-font', $replace_fontcss);

@@ -1,6 +1,8 @@
 # NHSScotland WordPress Theme
-This is a companion child theme that can be used in conjuction with the NHS Leadership Academy Nightingale Theme (https://en-gb.wordpress.org/themes/nightingale/).
+This is a companion child theme that can be used in conjuction with the NHS Leadership Academy Nightingale Theme (https://en-gb.wordpress.org/themes/nightingale/).  
 It has been customised to apply NHS Scotland colours, add additional custom templates, and change the font used (due to licensing).
+
+![Example Image](./.github/screenshot.png)
 
 ## Usage
 - Install the Nightingale Theme - https://en-gb.wordpress.org/themes/nightingale/
