@@ -1,8 +1,39 @@
 <?php
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if (!defined("ABSPATH")) {
+    exit();
+}
 
-//region Plugin Update Checker
+/**
+ *
+ * WARNING: DO NOT MAKE EDITS TO THIS FILE.
+ * 
+ * This file is automatically updated from a central repository on a regular basis.
+ * Any direct changes made here WILL be overwritten and lost.
+ * 
+ * If you wish to add theme related customisations, we recommend that you create a custom plugin.
+ * CONTACT: nss.showteam@nhs.scot
+ * 
+ * 
+ * NHS Scotland SWO Custom Theme Functions:
+ * 
+ * 1. Plugin Update Checker
+ * 2. Enqueue NHS Scotland CSS
+ * 3. Login Page Branding
+ * 4. Admin Bar Logo
+ * 5. Admin Bar Cleanup
+ * 6. Add Link to Admin Bar
+ * 7. Remove Greeting
+ * 8. Register Secondary Sidebar
+ * 9. Enqueue Footer JavaScript
+ * 10. Restrict Dashboard Menu
+ * 11. Plugin Warning
+ * 12. Font Replacement
+ * 13. Add Meta Tags
+ * 14. Clean Up Dashboard Widgets 
+*/
+
+//region Plugin Update Checker - Handles plugin updates from GitHub
 require_once get_theme_file_path( 'vendor/plugin-update-checker/plugin-update-checker.php' );
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
@@ -11,139 +42,334 @@ $showUpdateChecker = PucFactory::buildUpdateChecker(
 	__FILE__, //Full path to the main plugin file or functions.php.
 	'nightingale-child'
 );
-//endregion Plugin Update Checker
+//endregion
 
+//region Enqueue "custom.css" file
+function enqueue_custom_stylesheets() {
+    // Enqueue custom.css
+    wp_enqueue_style('custom-styles', get_stylesheet_directory_uri() . '/custom.css');
+    
+    // Enqueue styles.css and set custom.css as a dependency
+    wp_enqueue_style('main-styles', get_stylesheet_uri(), array('custom-styles'));
+}
+add_action('wp_enqueue_scripts', 'enqueue_custom_stylesheets');
+//endregion
 
-// BEGIN ENQUEUE PARENT ACTION
-// AUTO GENERATED - Do not modify or remove comment markers above or below:
-
-if ( !function_exists( 'chld_thm_cfg_locale_css' ) ):
-    function chld_thm_cfg_locale_css( $uri ){
-        if ( empty( $uri ) && is_rtl() && file_exists( get_template_directory() . '/rtl.css' ) )
-            $uri = get_template_directory_uri() . '/rtl.css';
-        return $uri;
+//region Login Page Branding - Replace WordPress logo with NHS Scotland logo on login screen
+function add_logo_to_login()
+    {
+        echo '<h1>&nbsp;</h1><style type="text/css">
+            h1 a { background-image:url(' .
+            get_stylesheet_directory_uri() .
+            '/images/nhs-scotland-logo.svg) !important; width:300px !important;}
+        </style>';
     }
-endif;
-add_filter( 'locale_stylesheet_uri', 'chld_thm_cfg_locale_css' );
+add_action("login_head", "add_logo_to_login");
+//endregion
 
-if ( !function_exists( 'child_theme_configurator_css' ) ):
-    function child_theme_configurator_css() {
-        wp_enqueue_style( 'chld_thm_cfg_child', trailingslashit( get_stylesheet_directory_uri() ) . 'style.css', array( 'nightingale-style','nightingale-style','nightingale-page-colours' ) );
-    }
-endif;
-add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css', 10 );
+//region Admin Bar Logo - Replace default logo in admin bar with white NHS Scotland logo
+function custom_admin_bar_logo() {
+    $custom_logo_url = get_stylesheet_directory_uri() . '/images/nhs-scotland-logo--white.svg';
+    ?>
+    <style type="text/css">
+        #wpadminbar #wp-admin-bar-wp-logo > .ab-item .ab-icon:before {
+            background: url('<?php echo esc_url($custom_logo_url); ?>') no-repeat center center !important;
+            background-size: contain !important;
+            color: transparent !important;
+            font-size: 28px;
+        }
+    </style>
+    <?php
+}
+add_action('wp_before_admin_bar_render', 'custom_admin_bar_logo');
+//endregion
 
-// END ENQUEUE PARENT ACTION
+//region Admin Bar Cleanup - Remove unnecessary admin bar items
+function customize_admin_bar() {
+    global $wp_admin_bar;
 
+    // Remove specific admin bar items.
+    $wp_admin_bar->remove_node('about');
+    $wp_admin_bar->remove_node('comments');
+    $wp_admin_bar->remove_node('contribute');
+    $wp_admin_bar->remove_node('feedback');
+    $wp_admin_bar->remove_node('support');
+    $wp_admin_bar->remove_node('learn');
+    $wp_admin_bar->remove_node('wporg');
+}
+add_action('wp_before_admin_bar_render', 'customize_admin_bar');
+//endregion
 
+//region Add Link to Admin Bar - Add "SHOW Support" link in admin bar dropdown
+function customize_admin_bar_logo_dropdown() {
+    global $wp_admin_bar;
 
+    // Add a top-level menu item under the WordPress logo dropdown
+    $wp_admin_bar->add_node(array(
+        'id'    => 'custom-logo-menu', // Unique ID for the top-level menu item
+        'title' => 'SHOW Support', // The title of the menu item
+        'href'  => 'https://www.showsupport.scot.nhs.uk', // URL for the menu item
+        'parent'=> 'wp-logo', // Parent node ID for the WordPress logo
+        'meta'  => array(
+            'class' => 'custom-logo-class', // Optional CSS class
+            'title' => 'SHOW Support', // Optional title attribute
+            'target' => '_blank', // Opens the link in a new window or tab
+        ),
+    ));
 
-// CUSTOM CODE BELOW
-
-// Replace default logo with NHS Scotland on WP-Login Page
-function add_logo_to_login() {
-    echo '<h1>&nbsp;</h1><style type="text/css">
-        h1 a { background-image:url('.get_stylesheet_directory_uri().'/images/nhs-scotland-logo.svg) !important; width:300px !important;}
+    // Output custom CSS for styling the admin bar items
+    echo '<style>
+        #wpadminbar #wp-admin-bar-custom-logo-menu > .ab-item {
+            background: #0073aa; /* Custom background color for the top-level item */
+            color: #fff; /* Custom text color */
+        }
+        #wpadminbar #wp-admin-bar-custom-logo-menu > .ab-item:hover {
+            background: #005177; /* Change background on hover */
+        }
     </style>';
 }
-add_action('login_head', 'add_logo_to_login');
+add_action('admin_bar_menu', 'customize_admin_bar_logo_dropdown', 999);
+//endregion
 
+//region Admin Bar Cleanup - Remove "Howdy" greeting from admin bar
+function remove_howdy_text($wp_admin_bar) {
+    $node = $wp_admin_bar->get_node('my-account');
 
+    if ($node) {
+        $wp_admin_bar->add_node(array(
+            'id'    => 'my-account',
+            'title' => str_replace('Howdy, ', '', $node->title),
+            'href'  => $node->href,
+            'meta'  => $node->meta
+        ));
+    }
+}
+add_action('admin_bar_menu', 'remove_howdy_text', 999);
+//endregion
 
-// Register new SECONDARY sidebar for use with Secondary Sidebar template
-function secondary_sidebar_widgets_init() {
-    register_sidebar(array(
-        'name' => 'Secondary Sidebar',
-        'id' => 'secondary_sidebar',
-        'before_widget' => '<aside class="widget %2$s">',
-        'after_widget' => '</aside>',
-        'before_title' => '<h2 class="widget-title">',
-        'after_title' => '</h2>',
-    ));
+//region Register Sidebar - Add "Secondary" sidebar for "Secondary" template widget areas
+function secondary_sidebar_widgets_init()
+{
+    register_sidebar([
+        "name" => "Secondary Sidebar",
+        "id" => "secondary_sidebar",
+        "before_widget" => '<aside class="widget %2$s">',
+        "after_widget" => "</aside>",
+        "before_title" => '<h2 class="widget-title">',
+        "after_title" => "</h2>",
+    ]);
 }
 
-add_action( 'widgets_init', 'secondary_sidebar_widgets_init' );
+add_action("widgets_init", "secondary_sidebar_widgets_init");
+//endregion
 
-
-// Custom script with no dependencies, enqueued in the footer
-add_action('wp_enqueue_scripts', 'nhsscotland_enqueue_custom_js');
-function nhsscotland_enqueue_custom_js() {
-    wp_enqueue_script('custom', get_stylesheet_directory_uri().'/scripts/custom.js', array(), false, true);
+//region Enqueue Custom JavaScript - Add custom.js file to site footer
+add_action("wp_enqueue_scripts", "nhsscotland_enqueue_custom_js");
+function nhsscotland_enqueue_custom_js()
+{
+    wp_enqueue_script(
+        "custom", // Handle for the script.
+        get_stylesheet_directory_uri() . "/scripts/custom.js", // URL to the JavaScript file.
+        [], // No dependencies for this script.
+        false, // No version number specified.
+        true // Load the script in the footer.
+    );
 }
+//endregion
 
-// Hides WordPress dashboard menu items from users other than sysadmin (UserID = 1).
-// Admin users still have access to these pages. All this function does is hides the pages. It does not disable the functionality which can be accessed if the full url is known.
-add_action( 'admin_init', 'remove_menu_pages' );
-function remove_menu_pages() {
+//region Restrict Dashboard Menu - Hide menu items for non-sysadmin (UserID = 1) users
+//NOTE: Admin users still have access to these pages. All this function does is hides the pages. It does not disable the functionality which can be accessed if the full url is known.
+function remove_menu_pages()
+{
+    if (wp_get_current_user()->user_login !== 'sysadmin') {
+        //your user id
 
-  global $user_ID;
+        //Hide COMMENTS
+        remove_menu_page("edit-comments.php"); // Comments
 
-  if ( $user_ID != 1 ) { //your user id
+        //Hide APPEARANCE
+        remove_submenu_page("themes.php", "themes.php");
+        remove_submenu_page("themes.php", "tgmpa-install-plugins");
+        remove_submenu_page("themes.php", "theme-editor.php");
 
-    //Hide COMMENTS
-    remove_menu_page('edit-comments.php'); // Comments
+        //Hide PLUGINS
+        remove_submenu_page("plugins.php", "plugin-editor.php");
+        remove_submenu_page("plugins.php", "plugin-install.php");
 
-    //Hide APPEARANCE
-    remove_submenu_page( 'themes.php', 'themes.php' );
-    remove_submenu_page( 'themes.php', 'tgmpa-install-plugins' );
-    remove_submenu_page( 'themes.php', 'theme-editor.php' );
+        //Hide TOOLS
+        remove_menu_page("tools.php");
+        remove_submenu_page("tools.php", "tools.php");
+        remove_submenu_page("tools.php", "import.php");
+        remove_submenu_page("tools.php", "export.php");
+        remove_submenu_page("tools.php", "export-personal-data.php");
+        remove_submenu_page("tools.php", "erase-personal-data.php");
 
-    //Hide PLUGINS
-    remove_submenu_page( 'plugins.php', 'plugin-editor.php' );
-    remove_submenu_page( 'plugins.php', 'plugin-install.php' );
+        //Hide SETTINGS
+        remove_submenu_page("options-general.php", "options-privacy.php");
+        remove_submenu_page("options-general.php", "options-permalink.php");
+        remove_submenu_page("options-general.php", "options-media.php");
+        remove_submenu_page("options-general.php", "options-discussion.php");
+        remove_submenu_page("options-general.php", "options-writing.php");
+        remove_submenu_page("options-general.php", "svg-support");
+        remove_submenu_page("options-general.php", "mainwp_child_tab");
+        remove_submenu_page( 'options-general.php', 'show-settings' ); //If "SHOW Settings" Plugin is activated
 
-    //Hide TOOLS
-    remove_menu_page('tools.php');
-    remove_submenu_page( 'tools.php', 'tools.php' );
-    remove_submenu_page( 'tools.php', 'import.php' );
-    remove_submenu_page( 'tools.php', 'export.php' );
-    remove_submenu_page( 'tools.php', 'export-personal-data.php' );
-    remove_submenu_page( 'tools.php', 'erase-personal-data.php' );
+        //Hide MegaMenu
+        remove_menu_page("maxmegamenu");
 
-    //Hide SETTINGS
-    remove_submenu_page( 'options-general.php', 'options-privacy.php' );
-    remove_submenu_page( 'options-general.php', 'options-permalink.php' );
-    remove_submenu_page( 'options-general.php', 'options-media.php' );
-    remove_submenu_page( 'options-general.php', 'options-discussion.php' );
-    remove_submenu_page( 'options-general.php', 'options-writing.php' );
-    remove_submenu_page( 'options-general.php', 'svg-support' );
-    remove_submenu_page( 'options-general.php', 'mainwp_child_tab' );
+        //Hide Maintenance
+        remove_menu_page("maintenance");
 
-    //Hide MegaMenu
-    remove_menu_page( 'maxmegamenu' );
-
-    //Hide Maintenance
-    remove_menu_page( 'maintenance' );
-
-    //Hide WP Mail SMTP
-    remove_menu_page( 'wp-mail-smtp' );
-  }
+        //Hide WP Mail SMTP
+        remove_menu_page("wp-mail-smtp");
+    }
 }
+add_action("admin_init", "remove_menu_pages");
+//endregion
 
+//region Plugin Warning - Display warning messages for plugin installations
+function showpluginnotice_admin_notices() {
 
-// Adds customs styles to the WordPress Dashboard
-// Hides the ADD NEW PLUGIN screen and Delete Button from users.
-add_action('admin_head', 'hide_add_plugin_screen');
+    $current_user = wp_get_current_user();
 
-function hide_add_plugin_screen() {
+    if ($current_user->user_login === 'sysadmin') {
+        return; // Exit if the user is "sysadmin"
+    }
 
-    global $user_ID;
-    if ( $user_ID != 1 ) {
-        echo '<style>
-            .plugin-install-tab-featured {display:none;}
-            .plugin-install-tab-featured::before {content: "Please contact nss.showteam@nhs.scot";}
-            #setting-error-tgmpa {display: none;}
-            .row-actions>.delete {visibility: hidden;}
+    $screen = get_current_screen();
+
+    if ($screen->id !== "plugin-install") {
+        return; // Exit if not on the Add Plugins page
+    }
+
+    $first_name = $current_user->user_firstname;
+    $username = $current_user->user_login;
+    $display_name = !empty($first_name) ? $first_name : $username;
+    $user_email = $current_user->user_email;
+    ?>
+    <div id="showpluginnotice-modal" class="showpluginnotice-modal">
+        <div class="showpluginnotice-modal-content">
+            <h2 class="warning-heading">PLUGIN INSTALLATION NOTICE</h2>
+            <p>Dear <strong><?php echo $display_name; ?></strong>, while plugins can enhance your site, it's important to be aware that they also carry some risks.</p>
+            <p>Plugins that are poorly maintained (or those from untrusted sources) may introduce security vulnerabilities, cause conflicts with other plugins, or result in data loss. We recommend reviewing the plugin’s ratings, reviews, and developer credentials carefully before proceeding.</p>
+            <p>SHOW does not endorse or guarantee the safety, functionality, or quality of any third-party plugins you may choose to install. Further information can be found on our <a class="warning-link" target="_blank" href="https://www.showsupport.scot.nhs.uk/plugin-policy">Plugin Policy</a> page.</p>
+            <p>By proceeding, you confirm that you have the site owner's permission to install and are aware of and accept the associated risks.</p>
+            <button id="showpluginnotice-modal-accept" class="showpluginnotice-modal-accept" disabled>I understand the risks (<span id="countdown">10</span>)</button>
+        </div>
+    </div>
+    <div class="notice notice-error">
+        <p><strong>Important</strong>: Please refer to SHOW's <a href="https://www.showsupport.scot.nhs.uk/plugin-policy" target="_blank">Plugin Policy</a> page <strong>PRIOR</strong> to installing plugins.</p>
+    </div>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = document.getElementById('showpluginnotice-modal');
+            var acceptButton = document.getElementById('showpluginnotice-modal-accept');
+            var countdownElement = document.getElementById('countdown');
+            var countdown = 10;
+
+            // Show the modal
+            modal.style.display = 'block';
+
+            // Update the countdown every second
+            var countdownInterval = setInterval(function() {
+                countdown--;
+                countdownElement.textContent = countdown;
+
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    acceptButton.disabled = false;
+                    acceptButton.textContent = "I understand the risks";
+                }
+            }, 1000);
+
+            // When the user clicks on "Accept" button, close the modal
+            acceptButton.onclick = function() {
+                modal.style.display = 'none';
             }
-        </style>';
-  }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        });
+    </script>
+    <style>
+        .showpluginnotice-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .showpluginnotice-modal-content {
+            background-color: #172ab7;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 85%;
+            max-width: 650px;
+            text-align: center;
+            border-radius: 10px;
+            color: white;
+        }
+        .showpluginnotice-modal-close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .showpluginnotice-modal-close:hover,
+        .showpluginnotice-modal-close:focus {
+            color: #ccc;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .showpluginnotice-modal-accept {
+            background-color: #fff;
+            color: #172ab7;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .showpluginnotice-modal-accept:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .showpluginnotice-modal-accept:hover:enabled {
+            background-color: #f2f2f2;
+        }
+
+        .warning-heading {
+            color: white;
+        }
+
+        .warning-link { color: white; }
+    </style>
+    <?php
 }
+add_action('admin_notices', 'showpluginnotice_admin_notices');
+//endregion
 
-
-//Replaces Frutiger W01 with Istok Web font
-function enqueue_replace_font() {
-    // Enqueue the Roboto font from Google Fonts
-    wp_enqueue_style('replace-font', 'https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet', false);
+//region Font Replacement - Change font from Frutiger W01 to Istok Web
+function enqueue_replace_font()
+{
+    // Enqueue the Istok Web font from Google Fonts
+    wp_enqueue_style(
+        "replace-font",
+        'https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet',
+        false
+    );
 
     // Add custom CSS to ensure "Istok Web" font-family is used
     $replace_fontcss = "
@@ -151,7 +377,69 @@ function enqueue_replace_font() {
             font-family: \"Istok Web\", sans-serif !important;
         }
     ";
-    wp_add_inline_style('replace-font', $replace_fontcss);
+    wp_add_inline_style("replace-font", $replace_fontcss);
 }
 
-add_action('wp_enqueue_scripts', 'enqueue_replace_font', 20);
+add_action("wp_enqueue_scripts", "enqueue_replace_font", 20);
+//endregion
+
+//region Add Meta Tags - Insert custom meta tags and NHS Scotland logo into <head>
+function add_custom_meta_tags()
+{
+    if (is_single() || is_page()) {
+        global $post;
+
+        // Ensure we have a valid post object
+        if (!is_object($post)) {
+            return;
+        }
+
+        $description = get_bloginfo("description");
+        $title = get_the_title($post->ID);
+        $url = get_permalink($post->ID);
+        $default_image =
+            get_stylesheet_directory_uri() . "/images/nhs-scotland-logo.svg"; // URL of your default image
+
+        // Get the featured image if available
+        $image = $default_image;
+        if (has_post_thumbnail($post->ID)) {
+            $image = get_the_post_thumbnail_url($post->ID, "full");
+        }
+
+        // Print the meta tags
+        echo '<meta name="description" content="' .
+            esc_attr($description) .
+            '">' .
+            "\n";
+        echo '<meta property="og:title" content="' .
+            esc_attr($title) .
+            '">' .
+            "\n";
+        echo '<meta property="og:description" content="' .
+            esc_attr($description) .
+            '">' .
+            "\n";
+        echo '<meta property="og:url" content="' . esc_url($url) . '">' . "\n";
+        echo '<meta property="og:image" content="' .
+            esc_url($image) .
+            '">' .
+            "\n";
+    }
+}
+add_action("wp_head", "add_custom_meta_tags");
+//endregion
+
+//region Clean Up Dashboard Widgets - Remove unnecessary dashboard widgets
+add_action("wp_dashboard_setup", "remove_dashboard_widgets");
+function remove_dashboard_widgets()
+{
+    remove_meta_box("dashboard_right_now", "dashboard", "normal"); // Right Now
+    remove_meta_box("dashboard_recent_comments", "dashboard", "normal"); // Recent Comments
+    remove_meta_box("dashboard_incoming_links", "dashboard", "normal"); // Incoming Links
+    remove_meta_box("dashboard_plugins", "dashboard", "normal"); // Plugins
+    remove_meta_box("dashboard_quick_press", "dashboard", "side"); // Quick Press
+    remove_meta_box("dashboard_recent_drafts", "dashboard", "side"); // Recent Drafts
+    remove_meta_box("dashboard_primary", "dashboard", "side"); // WordPress blog
+    remove_meta_box("dashboard_secondary", "dashboard", "side"); // Other WordPress News
+}
+//endregion
