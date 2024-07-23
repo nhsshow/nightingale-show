@@ -18,19 +18,20 @@ if (!defined("ABSPATH")) {
  * NHS Scotland SWO Custom Theme Functions:
  * 
  * 1. Plugin Update Checker
- * 2. Login Page Branding
- * 3. Admin Bar Logo
- * 4. Admin Bar Cleanup
- * 5. Add Link to Admin Bar
- * 6. Remove Greeting
- * 7. Register Secondary Sidebar
- * 8. Enqueue Footer JavaScript
- * 9. Restrict Dashboard Menu
- * 10. Plugin Warning
- * 11. Font Replacement
- * 12. Add Meta Tags
- * 13. Clean Up Dashboard Widgets
- * 14. Disable Comments
+ * 2. Enqueue Custom Stylesheets
+ * 3. Login Page Branding
+ * 4. Admin Bar Logo
+ * 5. Admin Bar Cleanup
+ * 6. Add Link to Admin Bar
+ * 7. Remove Greeting
+ * 8. Register Secondary Sidebar
+ * 9. Enqueue Footer JavaScript
+ * 10. Restrict Dashboard Menu
+ * 11. Plugin Warning
+ * 12. Font Replacement
+ * 13. Add Meta Tags
+ * 14. Clean Up Dashboard Widgets
+ * 15. Disable Comments
 */
 
 //region Plugin Update Checker - Handles plugin updates from GitHub
@@ -42,6 +43,16 @@ $showUpdateChecker = PucFactory::buildUpdateChecker(
 	__FILE__, //Full path to the main plugin file or functions.php.
 	'nightingale-child'
 );
+//endregion
+
+//region Enqueue "custom.css" file
+function enqueue_custom_stylesheets() {
+    // Enqueue styles.css first
+    wp_enqueue_style('main-styles', get_stylesheet_uri());
+    // Enqueue custom.css and set styles.css as a dependency
+    wp_enqueue_style('custom-styles', get_stylesheet_directory_uri() . '/custom.css', array('main-styles'));
+}
+add_action('wp_enqueue_scripts', 'enqueue_custom_stylesheets');
 //endregion
 
 //region Login Page Branding - Replace WordPress logo with NHS Scotland logo on login screen
