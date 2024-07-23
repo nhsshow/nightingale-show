@@ -30,7 +30,8 @@ if (!defined("ABSPATH")) {
  * 11. Plugin Warning
  * 12. Font Replacement
  * 13. Add Meta Tags
- * 14. Clean Up Dashboard Widgets 
+ * 14. Clean Up Dashboard Widgets
+ * 15. Disable Comments
 */
 
 //region Plugin Update Checker - Handles plugin updates from GitHub
@@ -46,11 +47,10 @@ $showUpdateChecker = PucFactory::buildUpdateChecker(
 
 //region Enqueue "custom.css" file
 function enqueue_custom_stylesheets() {
-    // Enqueue custom.css
-    wp_enqueue_style('custom-styles', get_stylesheet_directory_uri() . '/custom.css');
-    
-    // Enqueue styles.css and set custom.css as a dependency
-    wp_enqueue_style('main-styles', get_stylesheet_uri(), array('custom-styles'));
+    // Enqueue styles.css first
+    wp_enqueue_style('main-styles', get_stylesheet_uri());
+    // Enqueue custom.css and set styles.css as a dependency
+    wp_enqueue_style('custom-styles', get_stylesheet_directory_uri() . '/custom.css', array('main-styles'));
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_stylesheets');
 //endregion
@@ -159,12 +159,10 @@ function secondary_sidebar_widgets_init()
         "after_title" => "</h2>",
     ]);
 }
-
 add_action("widgets_init", "secondary_sidebar_widgets_init");
 //endregion
 
 //region Enqueue Custom JavaScript - Add custom.js file to site footer
-add_action("wp_enqueue_scripts", "nhsscotland_enqueue_custom_js");
 function nhsscotland_enqueue_custom_js()
 {
     wp_enqueue_script(
@@ -175,6 +173,7 @@ function nhsscotland_enqueue_custom_js()
         true // Load the script in the footer.
     );
 }
+add_action("wp_enqueue_scripts", "nhsscotland_enqueue_custom_js");
 //endregion
 
 //region Restrict Dashboard Menu - Hide menu items for non-sysadmin (UserID = 1) users
@@ -379,7 +378,6 @@ function enqueue_replace_font()
     ";
     wp_add_inline_style("replace-font", $replace_fontcss);
 }
-
 add_action("wp_enqueue_scripts", "enqueue_replace_font", 20);
 //endregion
 
@@ -430,7 +428,6 @@ add_action("wp_head", "add_custom_meta_tags");
 //endregion
 
 //region Clean Up Dashboard Widgets - Remove unnecessary dashboard widgets
-add_action("wp_dashboard_setup", "remove_dashboard_widgets");
 function remove_dashboard_widgets()
 {
     remove_meta_box("dashboard_right_now", "dashboard", "normal"); // Right Now
@@ -442,4 +439,56 @@ function remove_dashboard_widgets()
     remove_meta_box("dashboard_primary", "dashboard", "side"); // WordPress blog
     remove_meta_box("dashboard_secondary", "dashboard", "side"); // Other WordPress News
 }
+add_action("wp_dashboard_setup", "remove_dashboard_widgets");
+//endregion
+
+//region Disable support for comments and trackbacks in post types
+function disable_comments_post_types_support() {
+    $post_types = get_post_types();
+    foreach ($post_types as $post_type) {
+        if (post_type_supports($post_type, 'comments')) {
+            remove_post_type_support($post_type, 'comments');
+            remove_post_type_support($post_type, 'trackbacks');
+        }
+    }
+}
+add_action('admin_init', 'disable_comments_post_types_support');
+
+// Close comments on the front-end
+function disable_comments_status() {
+    return false;
+}
+add_filter('comments_open', 'disable_comments_status', 20, 2);
+add_filter('pings_open', 'disable_comments_status', 20, 2);
+
+// Hide existing comments
+function disable_comments_hide_existing_comments($comments) {
+    $comments = array();
+    return $comments;
+}
+add_filter('comments_array', 'disable_comments_hide_existing_comments', 10, 2);
+
+// Redirect any user trying to access comments page
+function disable_comments_admin_menu_redirect() {
+    global $pagenow;
+    if ($pagenow === 'edit-comments.php' || $pagenow === 'comment.php') {
+        wp_redirect(admin_url());
+        exit;
+    }
+}
+add_action('admin_init', 'disable_comments_admin_menu_redirect');
+
+// Remove comments metabox from dashboard
+function disable_comments_dashboard() {
+    remove_meta_box('dashboard_recent_comments', 'dashboard', 'normal');
+}
+add_action('wp_dashboard_setup', 'disable_comments_dashboard');
+
+// Remove comments links from admin bar
+function disable_comments_admin_bar() {
+    if (is_admin_bar_showing()) {
+        remove_action('admin_bar_menu', 'wp_admin_bar_comments_menu', 60);
+    }
+}
+add_action('init', 'disable_comments_admin_bar');
 //endregion
