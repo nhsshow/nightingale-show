@@ -22,8 +22,9 @@ jobs:
 
       - name: Update versions by tag
         run: |
-          sed -i 's|--VERSION_TAG--|${GITHUB_REF_NAME#v}|' info.json
-          sed -i 's|--VERSION_TAG--|${GITHUB_REF_NAME#v}|' nightingale-child/style.css
+          VERSION="${GITHUB_REF_NAME#v}"
+          sed -i 's|--VERSION_TAG--|$VERSION|' info.json
+          sed -i 's|--VERSION_TAG--|$VERSION|' nightingale-child/style.css
 
       - name: Compress Theme
         run: |
@@ -33,4 +34,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create ${GITHUB_REF_NAME#v} theme.zip info.json
+          VERSION="${GITHUB_REF_NAME#v}"
+          gh release create "$VERSION" theme.zip info.json
