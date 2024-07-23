@@ -20,6 +20,11 @@ jobs:
         with:
           submodules: 'true'
 
+      - name: Update versions by tag
+        run: |
+          sed -i 's|--VERSION_TAG--|${{ github.ref_name }}|' info.json
+          sed -i 's|--VERSION_TAG--|${{ github.ref_name }}|' nightingale-child/style.css
+
       - name: Compress Theme
         run: |
           zip -r theme.zip nightingale-child
