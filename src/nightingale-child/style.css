@@ -4,7 +4,7 @@ Template: nightingale
 Author: SHOW - OT, AJ
 Description: Theme for NHS Scotland organisations. Based upon the NHS Leadership Academy Nightingale WordPress Theme. Highly customisable for all types of NHS organisations, from campaign sites to primary care providers to arms length bodies to community practices.
 Tags: nhsscotland,right-sidebar,left-sidebar,custom-menu,footer-widgets,theme-options
-Version: 1.2.11
+Version: 1.2.12
 Updated: 2024-07-23 12:30:00
 */
 
@@ -96,7 +96,7 @@ body.home .entry-title {
     opacity: 0.85;
 }
 
-.nhsuk-label {font-weight: 700; color: #003087 !important;}
+.nhsuk-label {font-weight: 700 !important; color: #003087;}
 
 /* Custom CSS for Gravity Forms */
 .gform_wrapper.gravity-theme fieldset {margin-bottom: 20px;}
