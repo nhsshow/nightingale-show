@@ -20,6 +20,11 @@ jobs:
         with:
           submodules: 'true'
 
+      - name: Update versions by tag
+        run: |
+          sed -i "s|--VERSION_TAG--|${GITHUB_REF_NAME#v}|" info.json
+          sed -i "s|--VERSION_TAG--|${GITHUB_REF_NAME#v}|" nightingale-child/style.css
+
       - name: Compress Theme
         run: |
           zip -r theme.zip nightingale-child
@@ -28,4 +33,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create ${{ github.ref_name }} theme.zip info.json
+          gh release create "${GITHUB_REF_NAME#v}" theme.zip info.json
