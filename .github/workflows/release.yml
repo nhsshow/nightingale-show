@@ -44,8 +44,8 @@ jobs:
           path: src/theme.zip
           compression-level: 0
 
-      # - name: Release new version
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     gh release create "${GITHUB_REF_NAME#v}" theme.zip info.json
+      - name: Release new version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME#v}" theme.zip info.json
