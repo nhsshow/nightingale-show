@@ -23,7 +23,7 @@ jobs:
 
       - name: Compile Theme
         run: |
-          ./build.sh
+          bash ./build.sh
 
       - name: Update versions by tag
         run: |
