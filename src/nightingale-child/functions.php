@@ -7,16 +7,16 @@ if (!defined("ABSPATH")) {
 /**
  *
  * WARNING: DO NOT MAKE EDITS TO THIS FILE.
- * 
+ *
  * This file is automatically updated from a central repository on a regular basis.
  * Any direct changes made here WILL be overwritten and lost.
- * 
+ *
  * If you wish to add theme related customisations, we recommend that you create a custom plugin.
  * CONTACT: nss.showteam@nhs.scot
- * 
- * 
+ *
+ *
  * NHS Scotland SWO Custom Theme Functions:
- * 
+ *
  * 1. Plugin Update Checker
  * 2. Enqueue Custom Stylesheets
  * 3. Login Page Branding
@@ -41,7 +41,7 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 $showUpdateChecker = PucFactory::buildUpdateChecker(
 	'https://github.com/nhsshow/nightingale-show/releases/latest/download/info.json',
 	__FILE__, //Full path to the main plugin file or functions.php.
-	'nightingale-child'
+	'nightingale-show'
 );
 //endregion
 
@@ -298,7 +298,7 @@ function showpluginnotice_admin_notices() {
         .showpluginnotice-modal {
             display: none;
             position: fixed;
-            z-index: 9999; 
+            z-index: 9999;
             left: 0;
             top: 0;
             width: 100%;
@@ -498,3 +498,106 @@ function disable_comments_for_non_sysadmin() {
 }
 add_action('init', 'disable_comments_for_non_sysadmin');
 //endregion
+
+
+//region Fix for NHS Blocks
+// NHS Blocks does not work properly with non-Nightingale themes; we do some fixing here.
+remove_action( 'init', 'nhsblocks_register_style' );
+
+remove_action( 'wp_enqueue_scripts', 'nhsblocks_enqueue_style' );
+
+remove_action( 'wp_footer', 'nhsblocks_hero_footer' );
+function nhsblocks_hero_footer_override() {
+	$theme     = wp_get_theme(); // gets the current theme.
+	$scriptout = "<script>
+        const heroBlock = document.querySelector('.wp-block-nhsblocks-heroblock');
+        const tabbedTabs = document.querySelector('.nhsuk-bordered-tabs-container');
+        if ((heroBlock)) {
+            matches = heroBlock.matches ? heroBlock.matches('.wp-block-nhsblocks-heroblock') : heroBlock.msMatchesSelector('.wp-block-nhsblocks-heroblock');
+            if (matches === true) {
+                const mainContent = document.querySelector('main');
+                const contentInner = document.querySelector('#contentinner');
+                const wholeDoc = document.querySelector('body');
+                const breadCrumb = document.querySelector('.nhsuk-breadcrumb');
+                const articleTitle = document.querySelector('.entry-header');
+                const sectionTitle = wholeDoc.querySelector('#nhsuk-tabbed-title');
+                const tabbedTabs = document.querySelector('.nhsuk-bordered-tabs-container');
+                mainContent.insertBefore(heroBlock, contentInner);
+                articleTitle.style.display = 'none';
+                mainContent.style.paddingTop = '0';
+                if (tabbedTabs) {
+                    mainContent.insertBefore(tabbedTabs, contentInner);
+                    heroBlock.style.borderBottom = '70px solid white';
+                    heroBlock.style.marginBottom = 'none';
+                } else {
+                    heroBlock.style.marginBottom = '70px';
+                }
+                if (breadCrumb) {
+                    wholeDoc.removeChild(breadCrumb);
+                }
+                if (sectionTitle) {
+                    removeElements(document.querySelectorAll('#nhsuk-tabbed-title'));
+                }
+            }
+        } else if (tabbedTabs) {
+            const mainContent = document.querySelector('main');
+            const contentInner = document.querySelector('#contentinner');
+            const wholeDoc = document.querySelector('body');
+            const breadCrumb = document.querySelector('.nhsuk-breadcrumb');
+            const articleTitle = document.querySelector('.entry-header');
+            const sectionTitle = wholeDoc.querySelector('#nhsuk-tabbed-title');
+            mainContent.insertBefore(tabbedTabs, contentInner);
+            if (breadCrumb) {
+                wholeDoc.removeChild(breadCrumb);
+            }
+            if (sectionTitle) {
+                removeElements(document.querySelectorAll('#nhsuk-tabbed-title'));
+            }
+            articleTitle.style.marginTop = '20px';
+            mainContent.style.paddingTop = '0';
+        }
+        // Page Link JS
+        const careCardWarning = document.querySelector('.nhsuk-care-card.is-style-warning-callout');
+        if ((careCardWarning)) {
+            const visuallyHidden = careCardWarning.querySelector('.nhsuk-u-visually-hidden');
+            jQuery(visuallyHidden).html('Warning advice: ');
+        }
+        const careCardUrgent = document.querySelector('.nhsuk-care-card.is-style-urgent');
+        if ((careCardUrgent)) {
+            const visuallyHidden = careCardUrgent.querySelector('.nhsuk-u-visually-hidden');
+            jQuery(visuallyHidden).html('Urgent advice: ');
+        }
+        const careCardImmediate = document.querySelector('.nhsuk-care-card.is-style-immediate');
+        if ((careCardImmediate)) {
+            const visuallyHidden = careCardImmediate.querySelector('.nhsuk-u-visually-hidden');
+            jQuery(visuallyHidden).html('Immediate action required: ');
+        }
+
+        (function () {
+            let url = window.location.href.split(/[?#]/)[0];
+            let pageList = document.querySelectorAll('.nhsuk-contents-list li.nhsuk-contents-list__item');
+            for (var i = pageList.length - 1; i >= 0; i--) {
+                let nhsList = pageList[i];
+                let link = pageList[i].children[0].href;
+                if (link === url) {
+                    let txt = pageList[i].innerText;
+                    pageList[i].innerHTML = txt;
+                }
+            }
+        })();
+        // Smooth scroll to link
+        jQuery(document).ready(function ($) {
+            $('.js-scroll-to').on('click', function (e) {
+                e.preventDefault();
+                let link = $(this).attr('href');
+                $('html, body').animate({
+                    scrollTop: $(link).offset().top - 50
+                }, 200);
+            });
+        });
+    </script>";
+	echo $scriptout;
+}
+
+add_action( 'wp_footer', 'nhsblocks_hero_footer_override' );
+//endregion Fix for NHS Blocks

@@ -20,17 +20,31 @@ jobs:
         with:
           submodules: 'true'
 
+      - name: Compile Theme
+        run: |
+          cp -R nightingale/*       nightingale-show/
+          cp -R nightingale-child/* nightingale-show/
+          cp nightingale/functions.php nightingale/style.css nightingale-show/
+          cat nightingale-child/functions.php | tail -n+2 >> nightingale-show/functions.php
+          cat nightingale-child/style.meta.css nightingale/style.css nightingale-child/style.css > nightingale-show/style.css
+
       - name: Update versions by tag
         run: |
           sed -i "s|--VERSION_TAG--|${GITHUB_REF_NAME#v}|" info.json
-          sed -i "s|--VERSION_TAG--|${GITHUB_REF_NAME#v}|" nightingale-child/style.css
+          sed -i "s|--VERSION_TAG--|${GITHUB_REF_NAME#v}|" nightingale-show/style.css
 
       - name: Compress Theme
         run: |
-          zip -r theme.zip nightingale-child
+          zip -r theme.zip nightingale-show
 
-      - name: Release new version
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create "${GITHUB_REF_NAME#v}" theme.zip info.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Theme Artifact
+          path: src/theme.zip
+          compression-level: 0
+
+      # - name: Release new version
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     gh release create "${GITHUB_REF_NAME#v}" theme.zip info.json
