@@ -601,3 +601,26 @@ function nhsblocks_hero_footer_override() {
 
 add_action( 'wp_footer', 'nhsblocks_hero_footer_override' );
 //endregion Fix for NHS Blocks
+
+//region Override default customizer options
+function nightingale_show_customize_register($wp_customize) {
+	$wp_customize->remove_setting('header_styles');
+	$wp_customize->add_setting(
+		'header_styles',
+		array(
+			'default'           => 'inverted',
+			'sanitize_callback' => 'nightingale_sanitize_select',
+		)
+	);
+
+	$wp_customize->remove_setting('theme_colour');
+	$wp_customize->add_setting(
+		'theme_colour',
+		array(
+			'default'           => 'nhs_dark_blue',
+			'sanitize_callback' => 'nightingale_sanitize_select',
+		)
+	);
+}
+add_action( 'customize_register', 'nightingale_show_customize_register' );
+//endregion Override default customizer options
