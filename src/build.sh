@@ -17,3 +17,5 @@ cat nightingale-child/functions.php | tail -n+2 >> nightingale-show/functions.ph
 
 # Compile style.css from our WP meta css, the base style.css, and our override style.css
 cat nightingale-child/style.meta.css nightingale/style.css nightingale-child/style.css > nightingale-show/style.css
+
+echo "Everything built OK"
