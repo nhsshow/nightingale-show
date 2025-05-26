@@ -1,5 +1,5 @@
 [submodule "src/nightingale"]
 	path = src/nightingale
 	url = https://github.com/NHSLeadership/nightingale-2-0
-	branch = tags/v2.7.5
+	branch = tags/v2.6.1
 
