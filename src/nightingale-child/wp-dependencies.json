@@ -1,0 +1,68 @@
+[
+	{
+		"name": "WP 2FA",
+		"host": "wordpress",
+		"slug": "wp-2fa/wp-2fa.php",
+		"uri": "https://wordpress.org/plugins/wp-2fa/",
+		"required": true
+	},
+	{
+		"name": "WP Mail SMTP",
+		"host": "wordpress",
+		"slug": "wp-mail-smtp/wp_mail_smtp.php",
+		"uri": "https://wordpress.org/plugins/wp-mail-smtp/",
+		"required": true
+	},
+	{
+		"name": "WPGraphQL",
+		"host": "wordpress",
+		"slug": "wp-graphql/wp-graphql.php",
+		"uri": "https://wordpress.org/plugins/wp-graphql/",
+		"required": true
+	},
+	{
+		"name": "MainWP Child",
+		"host": "wordpress",
+		"slug": "mainwp-child/mainwp-child.php",
+		"uri": "https://wordpress.org/plugins/mainwp-child/",
+		"required": true
+	},
+	{
+		"name": "WP CLI Login Server",
+		"host": "github",
+		"slug": "wp-cli-login-server/wp-cli-login-server.php",
+		"uri": "aaemnnosttv/wp-cli-login-server",
+		"branch": "master",
+		"required": true
+	},
+
+	{
+		"name": "NHS Blocks",
+		"host": "wordpress",
+		"slug": "nhsblocks/nhsblocks.php",
+		"uri": "https://en-gb.wordpress.org/plugins/nhsblocks/",
+		"required": true
+	},
+	{
+		"name": "Nested Pages",
+		"host": "wordpress",
+		"slug": "wp-nested-pages/wp-nested-pages.php",
+		"uri": "https://en-gb.wordpress.org/plugins/wp-nested-pages/",
+		"optional": true
+	},
+
+	{
+		"name": "Query Monitor",
+		"host": "wordpress",
+		"slug": "query-monitor/query-monitor.php",
+		"uri": "https://wordpress.org/plugins/query-monitor/",
+		"optional": true
+	},
+	{
+		"name": "Debug Bar",
+		"host": "wordpress",
+		"slug": "debug-bar/debug-bar.php",
+		"uri": "https://wordpress.org/plugins/debug-bar/",
+		"optional": true
+	}
+]

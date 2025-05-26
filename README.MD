@@ -23,7 +23,7 @@ When the upstream repos need changes, a few things are required due to git submo
 git submodule update --remote --merge --recursive # This may error, that's fine.
 
 declare -A SUBMODULES=(
-  ["src/nightingale"]="v2.7.5"
+  ["src/nightingale"]="v2.6.1"
 )
 for SUBMODULE in "${!SUBMODULES[@]}"; do
   TAG="${SUBMODULES[$SUBMODULE]}"

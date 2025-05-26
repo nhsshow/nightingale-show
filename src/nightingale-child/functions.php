@@ -34,15 +34,23 @@ if (!defined("ABSPATH")) {
  * 15. Disable Comments
 */
 
-//region Plugin Update Checker - Handles plugin updates from GitHub
+//region Load Composer tools - Plugin Update Checker / wp-dependency-installer
 require_once get_theme_file_path( 'vendor/autoload.php' );
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
-$showUpdateChecker = PucFactory::buildUpdateChecker(
-	'https://github.com/nhsshow/nightingale-show/releases/latest/download/info.json',
-	__FILE__, //Full path to the main plugin file or functions.php.
-	'nightingale-show'
-);
+remove_all_actions( 'tgmpa_register' ); // Remove parent dependency management
+add_action( 'plugins_loaded', function() use ($plugins) {
+	// Setup Update Checker
+	$showUpdateChecker = PucFactory::buildUpdateChecker(
+		'https://github.com/nhsshow/nightingale-show/releases/latest/download/info.json',
+		__FILE__, //Full path to the main plugin file or functions.php.
+		'nightingale-show'
+	);
+
+	// Setup plugin dependencies
+	WP_Dependency_Installer::instance( __DIR__ )->run();
+});
+
 //endregion
 
 //region Enqueue "custom.css" file
