@@ -3,7 +3,3 @@
 	url = https://github.com/NHSLeadership/nightingale-2-0
 	branch = tags/v2.7.5
 
-[submodule "src/nightingale-child/vendor/plugin-update-checker"]
-	path = src/nightingale-child/vendor/plugin-update-checker
-	url = https://github.com/YahnisElsts/plugin-update-checker
-	branch = tags/v5.6

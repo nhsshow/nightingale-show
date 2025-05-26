@@ -1,0 +1,7 @@
+{
+	"name": "nhsshow/nightingale-show",
+	"version": "1.0.0",
+	"require": {
+		"yahnis-elsts/plugin-update-checker": "v5.6"
+	}
+}

@@ -1,2 +1,5 @@
 /src/nightingale-show/*
 !/src/nightingale-show/.gitkeep
+
+/src/nightingale-child/vendor/*
+!/src/nightingale-child/vendor/.gitkeep

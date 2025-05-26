@@ -15,8 +15,7 @@ Due to this theme being a compilation of two seperate themes, doing local develo
 git clone --recurse-submodules git@github.com:nhsshow/nightingale-show.git
 cd nightingale-show
 
-cd src
-bash ./build.sh
+(cd src; bash ./build.sh)
 ```
 
 When the upstream repos need changes, a few things are required due to git submodules being awkward with tags.  
@@ -25,7 +24,6 @@ git submodule update --remote --merge --recursive # This may error, that's fine.
 
 declare -A SUBMODULES=(
   ["src/nightingale"]="v2.7.5"
-  ["src/nightingale-child/vendor/plugin-update-checker"]="v5.5"
 )
 for SUBMODULE in "${!SUBMODULES[@]}"; do
   TAG="${SUBMODULES[$SUBMODULE]}"

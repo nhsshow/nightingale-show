@@ -21,6 +21,18 @@ jobs:
         with:
           submodules: 'true'
 
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: /tmp/composer-cache
+          key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install dependencies
+        uses: php-actions/composer@v6
+        with:
+          args: "--optimize-autoloader"
+          working_dir: "src/nightingale-child"
+
       - name: Compile Theme
         run: |
           bash ./build.sh
