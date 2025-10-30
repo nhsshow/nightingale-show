@@ -11,7 +11,7 @@ if (!defined("ABSPATH")) {
  * This file is automatically updated from a central repository on a regular basis.
  * Any direct changes made here WILL be overwritten and lost.
  *
- * If you wish to add theme related customisations, we recommend that you create a custom plugin.
+ * If you wish to add theme related customisations, we recommend that you create a child theme under nightingale-show-child.
  * CONTACT: nss.showteam@nhs.scot
  *
  *
