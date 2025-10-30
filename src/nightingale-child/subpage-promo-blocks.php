@@ -60,19 +60,17 @@ add_filter("excerpt_more", "remove_excerpt_ellipsis");
           ?>
 					<div class="CPS <?=$class_name; ?>">
 						<div class="wp-block-nhsblocks-promo1 nhsuk-card nhsuk-card--clickable is-style-default">
-						<?php
-          /*
-						if ( has_post_thumbnail( $child_page->ID ) ) : ?>
-									<figure class="wp-block-image size-full is-resized">
-										<a href="<?=get_permalink( $child_page->ID ); ?>"><?=get_the_post_thumbnail( $child_page->ID ); ?></a>
-									</figure>
-								<?php endif;
-						*/
-          ?>
+							<?php
+								/*
+								if ( has_post_thumbnail( $child_page->ID ) ) : ?>
+											<figure class="wp-block-image size-full is-resized">
+												<a href="<?=get_permalink( $child_page->ID ); ?>"><?=get_the_post_thumbnail( $child_page->ID ); ?></a>
+											</figure>
+										<?php endif;
+								*/
+							?>
 							<div class="nhsuk-card__content">
-								<h2 class="nhsuk-card__heading nhsuk-heading-m"><a class="nhsuk-card__link" href="<?=get_permalink(
-            $child_page->ID
-        ); ?>"><?=get_the_title($child_page->ID); ?></a></h2>
+								<h2 class="nhsuk-card__heading nhsuk-heading-m"><a class="nhsuk-card__link" href="<?=get_permalink($child_page->ID); ?>"><?=get_the_title($child_page->ID); ?></a></h2>
 								<div class="nhsuk-card__description">
 									<?=$excerpt; ?>
 								</div>
