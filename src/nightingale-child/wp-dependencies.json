@@ -57,6 +57,13 @@
 		"uri": "https://en-gb.wordpress.org/plugins/cookie-law-info/",
 		"optional": true
 	},
+	{
+		"name": "Smart Slider 3",
+		"host": "wordpress",
+		"slug": "smart-slider-3/smart-slider-3.php",
+		"uri": "https://en-gb.wordpress.org/plugins/smart-slider-3/",
+		"optional": true
+	},
 
 	{
 		"name": "Query Monitor",
