@@ -632,3 +632,48 @@ function nightingale_show_customize_register($wp_customize) {
 }
 add_action( 'customize_register', 'nightingale_show_customize_register' );
 //endregion Override default customizer options
+
+//region Custom GraphQL hooks
+add_action( 'graphql_register_types', function() {
+	/**
+	 * Root-level field: sidebars(id: String)
+	 * Allows querying any sidebar by its registered ID.
+	 */
+	register_graphql_field( 'RootQuery', 'sidebars', [
+		'type'        => 'String',
+		'description' => __( 'Render a dynamic sidebar by ID.', 'nightingale' ),
+		'args'        => [
+			'id' => [
+				'type'        => 'String',
+				'description' => __( 'The registered sidebar ID.', 'nightingale' ),
+			],
+		],
+		'resolve'     => function( $root, $args ) {
+			if ( empty( $args['id'] ) ) {
+				return null;
+			}
+			if ( ! is_registered_sidebar( $args['id'] ) ) {
+				return sprintf( '<!-- Sidebar "%s" not registered -->', esc_html( $args['id'] ) );
+			}
+			ob_start();
+			dynamic_sidebar( $args['id'] );
+			return ob_get_clean();
+		},
+	] );
+
+	/**
+	 * Add sidebar field to Page/Post type
+	 */
+	foreach (['Page' => 'sidebar-1', 'Post' => 'sidebar-2'] as $type => $sidebar_id) {
+		register_graphql_field( $type, 'sidebar', [
+			'type'        => 'String',
+			'description' => __( "The sidebar content for this page/post ($sidebar_id).", 'nightingale' ),
+			'resolve'     => function( $page ) use ($sidebar_id) {
+				ob_start();
+				dynamic_sidebar( $sidebar_id );
+				return ob_get_clean();
+			},
+		] );
+	}
+});
+//endregion Custom GraphQL hooks
