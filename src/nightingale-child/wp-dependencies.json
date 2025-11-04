@@ -64,6 +64,13 @@
 		"uri": "https://en-gb.wordpress.org/plugins/smart-slider-3/",
 		"optional": true
 	},
+	{
+		"name": "SVG Support",
+		"host": "wordpress",
+		"slug": "svg-support/svg-support.php",
+		"uri": "https://en-gb.wordpress.org/plugins/svg-support/",
+		"optional": true
+	},
 
 	{
 		"name": "Query Monitor",
