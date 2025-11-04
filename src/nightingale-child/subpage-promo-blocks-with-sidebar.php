@@ -90,7 +90,7 @@ add_filter("excerpt_more", "remove_excerpt_ellipsis");
 
 <script>
 	let cardContents = document.getElementsByClassName('CPS');
-	let maxHeight = 0;
+	let maxHeight = 320;
 
 	for (let i = 0; i < cardContents.length; i++) {
 		if (cardContents[i].offsetHeight > maxHeight) {

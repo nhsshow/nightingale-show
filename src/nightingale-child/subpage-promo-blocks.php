@@ -87,23 +87,18 @@ add_filter("excerpt_more", "remove_excerpt_ellipsis");
 </div>
 
 <script>
-// Get all the elements with class 'nhsuk-card__content'
-var cardContents = document.getElementsByClassName('CPS');
+	let cardContents = document.getElementsByClassName('CPS');
+	let maxHeight = 320;
 
-// Variable to store the maximum height
-var maxHeight = 0;
+	for (let i = 0; i < cardContents.length; i++) {
+		if (cardContents[i].offsetHeight > maxHeight) {
+			maxHeight = cardContents[i].offsetHeight;
+		}
+	}
 
-// Loop through each element and find the maximum height
-for (var i = 0; i < cardContents.length; i++) {
-  if (cardContents[i].offsetHeight > maxHeight) {
-    maxHeight = cardContents[i].offsetHeight;
-  }
-}
-
-// Set the minimum height for all elements to the maximum height
-for (var i = 0; i < cardContents.length; i++) {
-  cardContents[i].style.minHeight = maxHeight + 'px';
-}
+	for (let i = 0; i < cardContents.length; i++) {
+		cardContents[i].style.minHeight = maxHeight + 'px';
+	}
 </script>
 
 <?php
