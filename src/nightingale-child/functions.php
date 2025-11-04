@@ -633,6 +633,45 @@ function nightingale_show_customize_register($wp_customize) {
 add_action( 'customize_register', 'nightingale_show_customize_register' );
 //endregion Override default customizer options
 
+//region Force GraphQL settings
+add_filter( 'graphql_setting_field_config', function( $field_config, $field_name, $section ) {
+	switch ( $field_name ) {
+		// Prevent modification of certain settings
+		case 'graphql_endpoint':
+		case 'batch_queries_enabled':
+		case 'batch_limit':
+		case 'query_depth_enabled':
+		case 'query_depth_max':
+		case 'graphiql_enabled':
+		case 'tracing_user_role':
+		case 'query_log_user_role':
+			$field_config['value'] = $field_config['default'];
+			break;
+
+		// Restrict endpoint to authenticated users
+		case 'restrict_endpoint_to_logged_in_users':
+			$field_config['default'] = 'on';
+			$field_config['value']   = $field_config['default'];
+			break;
+
+		// Disable GraphiQL IDE Admin Bar link
+		case 'show_graphiql_link_in_admin_bar':
+			$field_config['default'] = 'off';
+			$field_config['value']   = $field_config['default'];
+			break;
+
+		// Prevent deletion of GraphQL data on deactivation.
+		case 'delete_data_on_deactivate':
+			$field_config['default'] = 'off';
+			$field_config['value']   = $field_config['default'];
+			break;
+	}
+
+	return $field_config;
+
+}, 10, 3 );
+//endregion Force GraphQL Settings
+
 //region Custom GraphQL hooks
 add_action( 'graphql_register_types', function() {
 	/**
