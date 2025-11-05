@@ -701,6 +701,24 @@ add_action( 'graphql_register_types', function() {
 	] );
 
 	/**
+	 * Add root field to query custom CSS
+	 */
+	register_graphql_field( 'RootQuery', 'themeCustomCSS', [
+		'type' => 'String',
+		'description' => __( 'CSS from the Additional CSS section of the Customizer' ),
+		'resolve' => function() {
+			$css_posts = get_posts( [
+				'post_type' => 'custom_css',
+				'posts_per_page' => 1,
+			] );
+			if ( empty( $css_posts ) ) {
+				return '';
+			}
+			return $css_posts[0]->post_content;
+		},
+	] );
+
+	/**
 	 * Add sidebar field to Page/Post type
 	 */
 	foreach (['Page' => 'sidebar-1', 'Post' => 'sidebar-2'] as $type => $sidebar_id) {
