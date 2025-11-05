@@ -71,6 +71,13 @@
 		"uri": "https://en-gb.wordpress.org/plugins/svg-support/",
 		"optional": true
 	},
+	{
+		"name": "Maintenance",
+		"host": "wordpress",
+		"slug": "maintenance/maintenance.php",
+		"uri": "https://en-gb.wordpress.org/plugins/maintenance/",
+		"optional": true
+	},
 
 	{
 		"name": "Query Monitor",
