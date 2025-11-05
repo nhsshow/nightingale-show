@@ -734,3 +734,65 @@ add_action( 'graphql_register_types', function() {
 	}
 });
 //endregion Custom GraphQL hooks
+
+//region Default WP 2FA options
+add_action('init', function() {
+	if (!get_option('dad')) {
+		if (!get_option('wp_2fa_settings')) {
+			$options = [
+				'wp_2fa_plugin_version' => '3.0.0',
+
+				'wp_2fa_policy' => [
+					'grace-policy'                     => 'use-grace-period',
+					'enable_destroy_session'           => FALSE,
+					'2fa_settings_last_updated_by'     => '1',
+					'limit_access'                     => FALSE,
+					'hide_remove_button'               => TRUE,
+					'redirect-user-custom-page'        => FALSE,
+					'redirect-user-custom-page-global' => FALSE,
+					'superadmins-role-add'             => FALSE,
+					'superadmins-role-exclude'         => FALSE,
+					'separate-multisite-page-url'      => FALSE,
+					'backup_codes_enabled'             => 'yes',
+					'enable_email'                     => 'enable_email',
+					'specify-email_hotp'               => FALSE,
+					'enable_totp'                      => 'enable_totp',
+					'grace-policy-notification-show'   => 'after-login-notification',
+					're-login-2fa-show'                => FALSE,
+					'grace-policy-after-expire-action' => 'configure-right-away',
+					'included_sites'                   => [],
+					'enforced_roles'                   => [0 => 'administrator'],
+					'enforced_users'                   => [],
+					'excluded_users'                   => [],
+					'excluded_roles'                   => [],
+					'excluded_sites'                   => [],
+					'grace-period'                     => 3,
+					'grace-period-denominator'         => 'days',
+					'create-custom-user-page'          => 'no',
+					'grace-period-expiry-time'         => '1762601206',
+					'enforcement-policy'               => 'certain-roles-only',
+					'methods_order'                    => [0 => 'totp', 1 => 'email']
+				],
+
+				'wp_2fa_settings' => [
+					'enable_destroy_session'     => FALSE,
+					'limit_access'               => TRUE,
+					'enable_rest'                => FALSE,
+					'disable_rest'               => FALSE,
+					'brute_force_disable'        => FALSE,
+					'delete_data_upon_uninstall' => FALSE,
+					'method_invalid_setting'     => 'login_block'
+				],
+
+				'wp_2fa_dismiss_notice_mail_domain' => '1',
+				'wp_2fa_survey_notice_needed'       => '0'
+			];
+			$options['wp_2fa_settings_hash'] = md5( json_encode( $options['wp_2fa_settings'] ) );
+			foreach ($options as $key => $value) {
+				update_option($key, $value);
+			}
+		}
+		update_option('wp_2fa_auto_configured', true);
+	}
+});
+//endregion Default WP 2FA options
