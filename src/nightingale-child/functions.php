@@ -634,6 +634,35 @@ add_action( 'customize_register', 'nightingale_show_customize_register' );
 //endregion Override default customizer options
 
 //region Force GraphQL settings
+add_action('init', function() {
+	if (!get_option('wp_graphql_auto_configured')) {
+		$options = [
+			'graphql_general_settings' => [
+				'graphql_endpoint'                     => 'graphql',
+				'restrict_endpoint_to_logged_in_users' => 'on',
+				'batch_queries_enabled'                => 'on',
+				'batch_limit'                          => '10',
+				'query_depth_enabled'                  => 'off',
+				'query_depth_max'                      => 10,
+				'query_analyzer_enabled'               => 'off',
+				'graphiql_enabled'                     => 'on',
+				'show_graphiql_link_in_admin_bar'      => 'off',
+				'delete_data_on_deactivate'            => 'off',
+				'debug_mode_enabled'                   => 'off',
+				'tracing_enabled'                      => 'off',
+				'tracing_user_role'                    => 'administrator',
+				'query_logs_enabled'                   => 'off',
+				'query_log_user_role'                  => 'administrator',
+				'public_introspection_enabled'         => 'off',
+			]
+		];
+		foreach ($options as $key => $value) {
+			update_option($key, $value);
+		}
+		update_option('wp_graphql_auto_configured', true);
+	}
+});
+
 add_filter( 'graphql_setting_field_config', function( $field_config, $field_name, $section ) {
 	switch ( $field_name ) {
 		// Prevent modification of certain settings
