@@ -39,7 +39,7 @@ require_once get_theme_file_path( 'vendor/autoload.php' );
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 remove_all_actions( 'tgmpa_register' ); // Remove parent dependency management
-add_action( 'plugins_loaded', function() use ($plugins) {
+add_action( 'after_setup_theme', function() {
 	// Setup Update Checker
 	$showUpdateChecker = PucFactory::buildUpdateChecker(
 		'https://github.com/nhsshow/nightingale-show/releases/latest/download/info.json',
