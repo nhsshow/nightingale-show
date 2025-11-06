@@ -737,7 +737,7 @@ add_action( 'graphql_register_types', function() {
 
 //region Default WP 2FA options
 add_action('init', function() {
-	if (!get_option('dad')) {
+	if (!get_option('wp_2fa_auto_configured')) {
 		if (!get_option('wp_2fa_settings')) {
 			$options = [
 				'wp_2fa_plugin_version' => '3.0.0',
